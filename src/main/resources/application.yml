@@ -1,0 +1,58 @@
+micronaut:
+  router:
+    static-resources:
+      swagger:
+        paths: classpath:META-INF/swagger
+        mapping: /swagger/**
+---
+micronaut:
+    application:
+        name: consumidor
+    server:
+        port: 7070
+jackson:
+    module-scan: false
+---
+micronaut:
+  security:
+    enabled: false
+    endpoints:
+      login:
+        enabled: true
+      oauth:
+        enabled: true
+    token:
+      jwt:
+        enabled: false
+        signatures:
+          secret:
+            generator:
+              secret: "${JWT_GENERATOR_SIGNATURE_SECRET:pleaseChangeThisSecretForANewOne}"
+
+---
+hibernate:
+  hbm2ddl:
+    auto: update
+  cache:
+    queries: false
+    use_second_level_cache: false
+    use_query_cache: false
+    #region.factory_class: org.hibernate.cache.ehcache.SingletonEhCacheRegionFactory
+dataSource:
+#  dbCreate: update
+  pooled: false
+  driverClassName: "com.mysql.cj.jdbc.Driver"
+  username: "root"
+  password: "root"
+  formatSql: true
+  dialect: "org.hibernate.dialect.MySQL5InnoDBDialect"
+  url: "jdbc:mysql://127.0.0.1:3306/teste?useTimezone=true&serverTimezone=UTC"
+
+
+
+---
+micronaut:
+  io:
+    watch:
+      paths: src/main
+      restart: true
